@@ -10,20 +10,14 @@ from tkinter import filedialog
 root = tk.Tk()
 root.withdraw()
 
-
 # DEBUG "Output directory not found", duplicates not detected
-
-# TODO, FIX BUG which renders files multiple times when only 1 is needed
-# TODO don't require slashes for directories, improve regex check if file exists, 
 # TODO, Improve logging to only output ERRORS and general stats, mute output RED tool, (Export metadata all shots?)
-
-#TODO Add pause button 
 
 
 def scan_folder(input_directory):
 	logging.info("Scanning input directory...")
 	file_list = []
-	# Only convert the first file in a RED Clip folder "_001" because REDLINE automaticly stitches the clips together, so no more duplicates
+	# Only convert the first file in a RED Clip folder "_001" because REDLINE automaticly stitches the clips together
 	for name in glob.iglob(input_directory + '/**/*_001.R3D', recursive = True):
 	    file_list.append(name)
 	    print(name)
@@ -78,7 +72,7 @@ def proxymaker(files_to_convert):
 				logging.info(str(file) + " already processed, skipping file.")
 				duplicate_count += 1 
 
-		except :
+		except:
 			logging.info ("Could not convert: " + str(file) + " skipping file")
 			print("Error: " + str(sys.exc_info()[0]))
 			print(traceback.format_exc())
@@ -93,7 +87,7 @@ def main():
 	subprocess.run("clear")
 
 	# Opening message
-	print("\n\n\n FK R3D to ProRess Proxy Beuker v0.8 \n ________________ \n To get started specify the input directory with the R3D files and the output directory for the Proxies, render log files and file metadata")
+	print("\n\n\n FK R3D to ProRess Proxy Beuker v0.9 \n ________________ \n To get started specify the input directory with the R3D files and the output directory for the Proxies, render log files and file metadata")
 	input("\n Press enter to open up a dialog to set the input directory \n")
 	input_directory = filedialog.askdirectory()
 	if not input_directory.endswith('/'): # Add trailing slash if not already in there
