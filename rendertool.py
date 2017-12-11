@@ -44,7 +44,7 @@ logging.getLogger('').addHandler(console)
 def scan_folder(input_directory):
 	logging.info("Scanning input directory...")
 	file_list = []
-	for name in glob.iglob(input_directory + '/**/*.R3D', recursive = True):
+	for name in glob.iglob(input_directory + '/**/*001.R3D', recursive = True):
 	    file_list.append(name)
 	    logging.info(name)
 	return file_list
