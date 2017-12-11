@@ -19,8 +19,8 @@ parser.add_argument('-o', action="store", dest="output_directory")
 
 #Hardcoded directory
 #ALWAYS ADD SLASH BEFORE AND AFTER PATH
-output_directory = "/Volumes/2017_UMF_SHANGHAI_BACKUP_01/2017 - UMF - SHANGHAI/09_Proxies/"
-input_directory = "/Volumes/2017_UMF_SHANGHAI_BACKUP_01/2017 - UMF - SHANGHAI/02_Footage/"
+output_directory = "/Volumes/2017_UMF_MEXICO_CHILE_PERU/2017_UMF_MEXICO/09_Proxies/"
+input_directory = "/Volumes/2017_UMF_MEXICO_CHILE_PERU/2017_UMF_MEXICO/02_Footage/"
 
 
 # set up logging to file - see previous section for more details
