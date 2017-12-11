@@ -84,7 +84,7 @@ def proxymaker(files_to_convert):
 
 				# Calculate new frame size
 				#width is predetermined
-				proxy_width = 1280
+				proxy_width = 1920
 				proxy_height = int (proxy_width/(file_width/file_height))
 
 				print ("Width" + str(file_width) + " Height " + str(file_height))
