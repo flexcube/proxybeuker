@@ -51,7 +51,7 @@ def scan_folder(input_directory):
 
 def check_if_file_exists(file):
 	filename_from_path = re.findall("C\/(.*).R3D", file)[0]
-	if os.path.isfile(output_directory + filename_from_path + "_Proxy.mov"):
+	if os.path.isfile(output_directory + filename_from_path):
 		return True
 	else:
 		return False
