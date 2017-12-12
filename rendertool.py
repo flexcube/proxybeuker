@@ -12,6 +12,7 @@ root.withdraw()
 
 # DEBUG "Output directory not found", duplicates not detected
 # TODO, Improve logging to only output ERRORS and general stats, mute output RED tool, (Export metadata all shots?)
+# Make output less verbose, improve logging, show progress, add argparse as option for file paths and resolution
 
 
 def scan_folder(input_directory):
