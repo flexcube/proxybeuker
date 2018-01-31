@@ -25,11 +25,8 @@ def check_if_file_exists(file):
     # Only converts the file if it is in the RDC folder, otherwise throws an Index Error
     filename_from_path = re.findall("C\/(.*).R3D", file)[0]
     if os.path.isfile(main.output_directory + filename_from_path + ".mov"):
-        print("Filename from path: " + filename_from_path)
-        print(os.path.isfile(main.output_directory + filename_from_path + ".mov"))
         return False
     else:
-        print(os.path.isfile(main.output_directory + filename_from_path + ".mov"))
         return True
 
 
@@ -39,7 +36,6 @@ def proxymaker(files_to_convert):
     error_count = 0
     for file in files_to_convert:
         # Try encoding, skip when error found.
-        print(file)
         try:
             # Check if file already exists
             if check_if_file_exists(file):
@@ -63,13 +59,14 @@ def proxymaker(files_to_convert):
                 proxy_width = 1920
                 proxy_height = int(proxy_width/(file_width/file_height))
 
-                print ("Original width " + str(file_width) + " Original Height " + str(file_height) +
+                print ("Original width: " + str(file_width) + " Original Height: " + str(file_height) +
                        " Proxy width: " + str(proxy_width) + " Proxy Height: " + str(proxy_height))
 
                 # Encode the proxy
                 subprocess.run(["REDline", "--silent", "--useRMD", "1", "--i", file, "--outDir", main.output_directory, "--o", file_name,
                                 "--format", "201", "--PRcodec", "2", "--res", "4", "--resizeX", str(proxy_width), "--resizeY", str(proxy_height)], shell=False)
                 converted_count += 1
+                subprocess.run("clear")
                 logging.info(str(converted_count + error_count + duplicate_count) +
                              " of " + str(len(files_to_convert)) + " have been processed!")
             else:
@@ -81,7 +78,6 @@ def proxymaker(files_to_convert):
             print("Error: " + str(sys.exc_info()[0]))
             print(traceback.format_exc())
             error_count += 1
-
     logging.info("Conversion done! \n Converted files: " + str(converted_count) + "\n Duplicate files skipped: " +
                  str(duplicate_count) + "\n Files with encoding errors: " + str(error_count))
 
@@ -90,21 +86,21 @@ def main():
     # Clear screen
     subprocess.run("clear")
     # Opening message
-    print("\n\n\n FK R3D to ProRess Proxy Beuker v0.9 \n ________________ \n To get started specify the input directory with the R3D files and the output directory for the Proxies, render log files and file metadata")
-    input("\n Press enter to open up a dialog to set the input directory \n")
+    print("\n\n\n FK R3D to ProRess Proxy Beuker V1 \n ________________ \n This app batch converts .R3D files to 1080P ProRess LT.\n It is designed to convert 1000+ files fast without freezing.")
+    print("\n Note: It only works if the R3D files are in the original '.RDC' folders.\n")
     input_directory = input(
         "\n Drag the input directory in here and press enter... \n")
     # Add trailing slash if not already in there
     if input_directory:
         if not input_directory.endswith('/'):
             input_directory = input_directory + "/"
-    print("\n Input folder: " + input_directory)
+    print("\n\n Selected input folder: " + input_directory)
     main.output_directory = input(
         "\n Drag the output directory in here and press enter... \n")
     # Add trailing slash if not already in there
     if not main.output_directory.endswith('/'):
         main.output_directory = main.output_directory + "/"
-    print ("Output folder: " + main.output_directory)
+    print ("\n\n Selected output folder: " + main.output_directory)
 
     # set up logging to file - see previous section for more details
     logging.basicConfig(level=logging.INFO,
@@ -122,11 +118,12 @@ def main():
     # add the handler to the root logger
     logging.getLogger('').addHandler(console)
 
-    input("Press enter to continue and start scanning \n\n")
+    input("\n\n Press enter to continue and start scanning \n\n")
     files_to_convert = scan_folder(input_directory)
     input(str(len(files_to_convert)) +
-          " items found, press enter to start transcoding \n\n")
-
+          " item(s) found, press enter to start transcoding \n\n")
+    # Clear screen
+    subprocess.run("clear")
     proxymaker(files_to_convert)
 
 
