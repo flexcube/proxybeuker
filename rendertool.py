@@ -5,10 +5,9 @@ import re
 import os
 import sys  # Can be deleted if error handling in Except is improved
 import traceback
-
-# DEBUG "Output directory not found", duplicates not detected
-# TODO, Improve logging to only output ERRORS and general stats, mute output RED tool, (Export metadata all shots?)
+# TODO, - Add text stating REDLINE is required, remove spacebar bug output folder, improve/disable logging
 # Make output less verbose, improve logging, show progress, add argparse as option for file paths and resolution
+# Build command: pyinstaller --onefile --ico=ico.icns --windowed rendertool.py
 
 
 def scan_folder(input_directory):
@@ -59,8 +58,8 @@ def proxymaker(files_to_convert):
                 proxy_width = 1920
                 proxy_height = int(proxy_width/(file_width/file_height))
 
-                print ("Original width: " + str(file_width) + " Original Height: " + str(file_height) +
-                       " Proxy width: " + str(proxy_width) + " Proxy Height: " + str(proxy_height))
+                print("Original width: " + str(file_width) + " Original Height: " + str(file_height) +
+                      " Proxy width: " + str(proxy_width) + " Proxy Height: " + str(proxy_height))
 
                 # Encode the proxy
                 subprocess.run(["REDline", "--silent", "--useRMD", "1", "--i", file, "--outDir", main.output_directory, "--o", file_name,
@@ -87,7 +86,7 @@ def main():
     subprocess.run("clear")
     # Opening message
     print("\n\n\n FK R3D to ProRess Proxy Beuker V1 \n ________________ \n This app batch converts .R3D files to 1080P ProRess LT.\n It is designed to convert 1000+ files fast without freezing.")
-    print("\n Note: It only works if the R3D files are in the original '.RDC' folders.\n")
+    print("\n Note: REDCINE-X NEEDS TO BE INSTALLED ON YOUR SYSTEM FOR THIS PROGRAM TO WORK \n It only works if the R3D files are in the original '.RDC' folders.\n")
     input_directory = input(
         "\n Drag the input directory in here and press enter... \n")
     # Add trailing slash if not already in there
@@ -100,7 +99,7 @@ def main():
     # Add trailing slash if not already in there
     if not main.output_directory.endswith('/'):
         main.output_directory = main.output_directory + "/"
-    print ("\n\n Selected output folder: " + main.output_directory)
+    print("\n\n Selected output folder: " + main.output_directory)
 
     # set up logging to file - see previous section for more details
     logging.basicConfig(level=logging.INFO,
