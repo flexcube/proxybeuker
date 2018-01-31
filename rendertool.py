@@ -5,10 +5,6 @@ import re
 import os
 import sys  # Can be deleted if error handling in Except is improved
 import traceback
-import tkinter as tk
-from tkinter import filedialog
-root = tk.Tk()
-root.withdraw()
 
 # DEBUG "Output directory not found", duplicates not detected
 # TODO, Improve logging to only output ERRORS and general stats, mute output RED tool, (Export metadata all shots?)
@@ -96,14 +92,15 @@ def main():
     # Opening message
     print("\n\n\n FK R3D to ProRess Proxy Beuker v0.9 \n ________________ \n To get started specify the input directory with the R3D files and the output directory for the Proxies, render log files and file metadata")
     input("\n Press enter to open up a dialog to set the input directory \n")
-    input_directory = filedialog.askdirectory()
+    input_directory = input(
+        "\n Drag the input directory in here and press enter... \n")
     # Add trailing slash if not already in there
     if input_directory:
         if not input_directory.endswith('/'):
             input_directory = input_directory + "/"
     print("\n Input folder: " + input_directory)
-    input("\n Press enter to open up a dialog to set the output directory \n")
-    main.output_directory = filedialog.askdirectory()
+    main.output_directory = input(
+        "\n Drag the output directory in here and press enter... \n")
     # Add trailing slash if not already in there
     if not main.output_directory.endswith('/'):
         main.output_directory = main.output_directory + "/"
