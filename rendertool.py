@@ -7,6 +7,7 @@ import sys  # Can be deleted if error handling in Except is improved
 import traceback
 # TODO improve/disable logging
 # Build command: pyinstaller --onefile -y rendertool.py
+# Improve file path parsing
 
 
 def scan_folder(input_directory):
