@@ -15,7 +15,6 @@ import threading
 
 # BUG: Program crashes if there is no internet connection (no error handling of requests)
 
-
 class converter(threading.Thread):
     gui_log = "guilog"
 
@@ -278,7 +277,6 @@ class MyApp(wx.App):
         return True
 
 # end of class MyApp
-
 
 if __name__ == "__main__":
     rendertool = MyApp(0)
