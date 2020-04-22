@@ -11,3 +11,4 @@ build/
 Archived/
 Archived/gui_layout
 code_snippets.py
+__pycache__/gui_rendertool.cpython-36.pyc

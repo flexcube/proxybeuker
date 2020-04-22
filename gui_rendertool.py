@@ -12,8 +12,11 @@ import traceback
 import threading
 
 # TODO: Add check if RED Cine-X is installed
-# TODO: Improve GUI Design
-# TODO: Make the conversion  stop when closing the program
+# TODO: Disable focus on TextCtrl on init (Focus on other item at start?)
+# TODO: Make the conversion stop when closing the program
+# TODO: Create progressbar instead of textbox, have the start button display with text the status.
+# TODO: Add Logo above text box
+# BUG: Fix Retina Resolution when packaged https://pyinstaller.readthedocs.io/en/stable/spec-files.html#spec-file-options-for-a-mac-os-x-bundle
 
 
 class converter(threading.Thread):
