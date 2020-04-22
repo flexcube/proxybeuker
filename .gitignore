@@ -3,9 +3,11 @@
 build/rendertool/out00-PYZ.toc
 rendertool.spec
 .vscode/
+.pyc
 .DS_Store
 gui_rendertool.spec
 rendcd.spec
 build/
 Archived/
+Archived/gui_layout
 code_snippets.py
