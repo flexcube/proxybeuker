@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import wx
 import glob
 import subprocess
@@ -9,14 +11,13 @@ import sys  # Can be deleted if error handling in Except is improved
 import traceback
 import threading
 
-# Pyinstaller: pyinstaller --onefile -y --icon=ico.icns -windowed gui_rendertool.py
-# Refractor/Clean-up code
-# Better GUI Design
+# TODO: Add check if RED Cine-X is installed
+# TODO: Improve GUI Design
+# TODO: Make the conversion  stop when closing the program
 
-# BUG: Program crashes if there is no internet connection (no error handling of requests)
 
 class converter(threading.Thread):
-    gui_log = "guilog"
+    gui_log = ""
 
     def __init__(self, arg1, arg2):
         self.input_directory = arg1
@@ -26,25 +27,20 @@ class converter(threading.Thread):
         # also make the GUI thread responsible for calling this
         self.start()
 
-        # WTF is the purpose of below lines?
-        # file_metadata = subprocess.Popen(['REDline', '--i', "/Users/Kevin/Downloads/redapptest/input/A004_C014_01061E.RDC/A004_C014_01061E_001.R3D",
-        #                                  '--printMeta', '1'], shell = False, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-        # print(str(file_metadata.communicate()))
-
     def run(self):
         self.main()
 
+    # Scan input folder for RED .R3D Files
     def scan_folder(self, input_directory):
         print("Scanning input directory...")
         file_list = []
-        # Only convert the first file in a RED Clip folder "_001" because REDLINE automaticly stitches the clips together
+        # Only convert the first .R3D file in a RED Clip folder "_001" because REDLINE automaticly stitches the clips together
         for name in glob.iglob(input_directory + '/**/*_001.R3D', recursive=True):
             file_list.append(name)
-            print(name)
         return file_list
 
     def check_duplicate_file(self, file):
-        # Only converts the file if it is in the RDC folder, otherwise throws an Index Error
+        # Only converts the file if it is in the originial RDC folder
         try:
             filename_from_path = re.findall("C\/(.*).R3D", file)[0]
         except:
@@ -64,9 +60,8 @@ class converter(threading.Thread):
             try:
                 # Check if file already exists
                 if self.check_duplicate_file(file):
-                    print("Converting file: " + file)
 
-                    # Output file metadata to string
+                    # Capture the metadata from the .R3D file  in a string by using Redline
                     file_metadata = subprocess.Popen(['/Applications/REDCINE-X Professional/REDCINE-X PRO.app/Contents/MacOS/REDline', '--i', file, '--printMeta', '1'],
                                                      shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     file_metadata = file_metadata.communicate()[
@@ -87,9 +82,7 @@ class converter(threading.Thread):
                     proxy_width = 1920
                     proxy_height = int(proxy_width/(file_width/file_height))
 
-                    print("Original width: " + str(file_width) + " Original Height: " + str(file_height) +
-                          " Proxy width: " + str(proxy_width) + " Proxy Height: " + str(proxy_height))
-
+                    print("Converting file: " + file_name)
                     # Encode the proxy
                     subprocess.run(["/Applications/REDCINE-X Professional/REDCINE-X PRO.app/Contents/MacOS/REDline", "--silent", "--useRMD", "1", "--i", file, "--outDir", self.output_directory, "--o", file_name, "--format",
                                     "201", "--PRcodec", "2", "--res", "4", "--resizeX", str(proxy_width), "--resizeY", str(proxy_height)], shell=False)
@@ -99,28 +92,22 @@ class converter(threading.Thread):
                           " of " + str(len(files_to_convert)) + " have been processed!")
                 else:
                     print(str(
-                        file) + " already processed or not in the right format or folder, skipping file.")
+                        file) + " already processed or file not in orginial RDC folder, skipping file.")
                     duplicate_count += 1
 
             except:
                 print("Could not convert: " +
                       str(file) + " skipping file")
-                # print("Error: " + str(sys.exc_info()[0]))
-                # print(traceback.format_exc())
                 error_count += 1
 
-        print("Conversion done! \n Converted files: " + str(converted_count) + "\n Duplicate files or wrong location: " +
-              str(duplicate_count) + "\n Files with encoding errors: " + str(error_count))
+        print("Conversion done! \nConverted files: " + str(converted_count) + "\nDuplicate files or wrong location: " +
+              str(duplicate_count) + "\nFiles with encoding errors: " + str(error_count))
 
     def main(self):
-
+        # Get all the .R3D files that need to be converted
         files_to_convert = self.scan_folder(self.input_directory)
 
-        # Not needed in GUI Version
-        # print(str(len(files_to_convert)) +
-        #      " item(s) found, press enter to start transcoding \n\n")
-
-        # Start Conversion
+        # Start the conversion
         self.proxymaker(files_to_convert)
 
 
@@ -139,121 +126,124 @@ class MyFrame(wx.Frame):
         kwds["style"] = kwds.get(
             "style", 0) | wx.CAPTION | wx.CLIP_CHILDREN | wx.CLOSE_BOX | wx.FRAME_NO_TASKBAR | wx.ICONIZE
         wx.Frame.__init__(self, *args, **kwds)
-        self.SetSize((611, 497))
+        self.SetSize((450, 350))
         self.panel_1 = wx.Panel(self, wx.ID_ANY)
 
-        global text_ctrl_3
-        self.text_ctrl_3 = wx.TextCtrl(
+        global text_box
+        self.text_box = wx.TextCtrl(
             self.panel_1, wx.ID_ANY, "", style=wx.TE_MULTILINE | wx.TE_NO_VSCROLL | wx.TE_RICH2)
-        self.text_ctrl_3.SetDefaultStyle(wx.TextAttr(wx.GREEN, wx.BLACK))
-        self.text_ctrl_3.SetBackgroundColour(wx.BLACK)
-        self.text_ctrl_3.SetOwnForegroundColour(wx.WHITE)
+        self.text_box.SetDefaultStyle(
+            wx.TextAttr(wx.Colour(96, 207, 48), wx.Colour(36, 36, 36)))
+        self.text_box.SetBackgroundColour(wx.Colour(36, 36, 36))
+        self.text_box.SetOwnForegroundColour(wx.WHITE)
 
-        self.button_1 = wx.Button(self.panel_1, wx.ID_ANY, "Input Folder")
+        self.input_folder_button = wx.Button(
+            self.panel_1, wx.ID_ANY, "Input Folder")
         self.Bind(wx.EVT_BUTTON, self.input_button_click,
-                  self.button_1)
-        self.text_ctrl_1 = wx.TextCtrl(
+                  self.input_folder_button)
+        self.input_folder_label = wx.TextCtrl(
             self.panel_1, wx.ID_ANY, "", style=wx.TE_READONLY)
 
-        self.button_2 = wx.Button(self.panel_1, wx.ID_ANY, "Output Folder")
+        self.output_folder_button = wx.Button(
+            self.panel_1, wx.ID_ANY, "Output Folder")
         self.Bind(wx.EVT_BUTTON, self.output_button_click,
-                  self.button_2)
+                  self.output_folder_button)
 
-        self.text_ctrl_2 = wx.TextCtrl(
+        self.output_folder_label = wx.TextCtrl(
             self.panel_1, wx.ID_ANY, "", style=wx.TE_READONLY)
-        self.button_3 = wx.Button(self.panel_1, wx.ID_ANY, "Start")
-        self.Bind(wx.EVT_BUTTON, self.start_conversion, self.button_3)
+        self.start_button = wx.Button(self.panel_1, wx.ID_ANY, "Start")
+        self.Bind(wx.EVT_BUTTON, self.start_conversion, self.start_button)
 
         self.__set_properties()
         self.__do_layout()
 
-        # Trial License Check
+        # Barebones license check. Check by polling webpage if the trial is activated.
         try:
             r = requests.get("https://proxybeuker.com/license2.html")
 
             if r.status_code == 200:
-                self.text_ctrl_3.AppendText("Trial Activated. \n")
+                self.text_box.AppendText("License Status: Trial Activated \n")
                 # Intro Text
-                self.text_ctrl_3.AppendText(
-                    "Batch convert RED .R3D files to Full HD ProRes LT. Select a folder to start. \nThe latest Redcine-x Pro version needs to be installed.\n\nSoftware provided as is, make a back-up before running this. \nAuthor: info@pieterboerboom.nl \n\n")
+                self.text_box.AppendText(
+                    "Welcome to ProxyBeuker! This tool batch converts RED .R3D files to Full HD ProRes LT.  \nMake sure to have the latest Redcine-X Pro version installed.\n\nSoftware provided as is, make a back-up before running. \nContact: info@proxybeuker.com \n\n")
             # end wxGlade
             else:
-                self.text_ctrl_3.AppendText(
-                    "Trial License Expired or License Server could not be reached.\nBuy a license at www.proxybeuker.com or contact us at info@proxybeuker.com")
-                self.button_1.Disable()
-                self.button_2.Disable()
-                self.button_3.Disable()
+                self.text_box.AppendText(
+                    "Trial license expired or license Server could not be reached.\nBuy a license at www.proxybeuker.com or contact us at info@proxybeuker.com")
+                self.input_folder_button.Disable()
+                self.output_folder_button.Disable()
+                self.start_button.Disable()
 
         except requests.exceptions.RequestException as e:
-            self.text_ctrl_3.AppendText(
-                "The License Server could not be reached due to a connection error. Are you connected to the internet?\nFor help contact us at info@proxybeuker.com")
-            self.button_1.Disable()
-            self.button_2.Disable()
-            self.button_3.Disable()
+            self.text_box.AppendText(
+                "The license server could not be reached due to a connection error. Are you connected to the internet?\nFor help contact us at info@proxybeuker.com")
+            self.input_folder_button.Disable()
+            self.output_folder_button.Disable()
+            self.start_button.Disable()
 
-        redir = RedirectText(self.text_ctrl_3)
+        # This is wat redirects terminal output to the text box?
+        redir = RedirectText(self.text_box)
         sys.stdout = redir
 
     def write(self, string):
-        wx.CallAfter(self.text_ctrl_3.AppendText, string)
+        wx.CallAfter(self.text_box.AppendText, string)
 
     def input_button_click(self, e):
-        """ Open a file"""
-        # dlg = wx.FileDialog(self, "Choose a file",
-        # self.dirname, "", "*.*", wx.FD_OPEN)
+
+        # Open OS window to chose input directory
         directory_dialog = wx.DirDialog(None, "Choose input directory", "",
                                         wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST)
         if directory_dialog.ShowModal() == wx.ID_OK:
             self.input_directory = directory_dialog.GetPath()
-            self.text_ctrl_1.SetLabelText(str(self.input_directory))
-            print(str(self.input_directory))
+            self.input_folder_label.SetLabelText(str(self.input_directory))
         directory_dialog.Destroy()
 
     def output_button_click(self, e):
-        """ Open a file"""
-        # dlg = wx.FileDialog(self, "Choose a file",
-        # self.dirname, "", "*.*", wx.FD_OPEN)
+
+        # Open OS window to chose output directory
         directory_dialog = wx.DirDialog(None, "Choose output directory", "",
                                         wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST)
         if directory_dialog.ShowModal() == wx.ID_OK:
             self.output_directory = directory_dialog.GetPath()
-            self.text_ctrl_2.SetLabelText(str(self.input_directory))
-            print(str(self.output_directory))
+            self.output_folder_label.SetLabelText(str(self.input_directory))
         directory_dialog.Destroy()
 
     def __set_properties(self):
-        # begin wxGlade: MyFrame.__set_properties
+        # Set the general properties for WX and styling
         self.SetTitle("Proxy Beuker")
-        self.SetBackgroundColour(wx.Colour(0, 0, 0))
-        self.button_1.SetMinSize((111, 20))
-        self.button_1.SetFont(
+        self.SetBackgroundColour(wx.Colour(36, 36, 36))
+        self.input_folder_button.SetMinSize((111, 20))
+        self.input_folder_button.SetFont(
+            wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
+        self.input_folder_label.SetMinSize((200, 22))
+        self.input_folder_label.SetBackgroundColour(wx.Colour(36, 36, 36))
+        self.input_folder_label.SetForegroundColour(wx.Colour(253, 151, 31))
+        self.output_folder_button.SetFont(
+            wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
+        self.output_folder_label.SetMinSize((200, 22))
+        self.output_folder_label.SetBackgroundColour(wx.Colour(36, 36, 36))
+        self.output_folder_label.SetForegroundColour(wx.Colour(253, 151, 31))
+        self.start_button.SetFont(
             wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
-        self.text_ctrl_1.SetMinSize((200, 22))
-        self.button_2.SetFont(
-            wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
-        self.text_ctrl_2.SetMinSize((200, 22))
-        self.button_3.SetFont(
-            wx.Font(20, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
-        self.text_ctrl_3.SetMinSize((600, 200))
+        self.text_box.SetMinSize((500, 150))
         # end wxGlade
 
     def __do_layout(self):
+        # Construct the lay-out
         # begin wxGlade: MyFrame.__do_layout
         sizer_1 = wx.BoxSizer(wx.VERTICAL)
         sizer_2 = wx.BoxSizer(wx.VERTICAL)
-        sizer_4 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_3 = wx.BoxSizer(wx.HORIZONTAL)
-        # fklogo = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(
-        #    "/Users/Kevin/Downloads/minilogo.png", wx.BITMAP_TYPE_ANY))
-        # sizer_1.Add(fklogo, 0, wx.ALIGN_CENTER, 0)
-        sizer_3.Add(self.button_1, 0, wx.ALIGN_CENTER, 10)
-        sizer_3.Add(self.text_ctrl_1, 1, wx.ALIGN_CENTER, 10)
+        sizer_4 = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_3.Add(self.input_folder_button, 0, wx.ALIGN_CENTER, 10)
+        sizer_3.Add(self.input_folder_label, 1, wx.ALIGN_CENTER, 10)
         sizer_2.Add(sizer_3, 1, wx.ALIGN_CENTER, 0)
-        sizer_4.Add(self.button_2, 0, 0, 0)
-        sizer_4.Add(self.text_ctrl_2, 0, wx.LEFT, 10)
+        sizer_4.Add(self.output_folder_button, 0, 0, 0)
+        sizer_4.Add(self.output_folder_label, 0,
+                    wx.ALIGN_CENTER_HORIZONTAL, 10)
         sizer_2.Add(sizer_4, 1, wx.ALIGN_CENTER, 0)
-        sizer_2.Add(self.button_3, 0, wx.ALIGN_CENTER | wx.ALL, 10)
-        sizer_2.Add(self.text_ctrl_3, 0, wx.ALIGN_CENTER, 0)
+        sizer_2.Add(self.start_button, 0, wx.ALIGN_CENTER | wx.ALL, 20)
+        sizer_2.Add(self.text_box, 0, wx.ALIGN_CENTER, 0)
         sizer_2.Add((0, 0), 0, 0, 0)
         self.panel_1.SetSizer(sizer_2)
         sizer_1.Add(self.panel_1, 1, wx.EXPAND, 0)
@@ -264,7 +254,7 @@ class MyFrame(wx.Frame):
 
     def start_conversion(self, e):
         converter(self.input_directory, self.output_directory)
-        self.text_ctrl_3.AppendText(str(converter.gui_log))
+        self.text_box.AppendText(str(converter.gui_log))
 
 # end of class MyFrame
 
@@ -277,6 +267,7 @@ class MyApp(wx.App):
         return True
 
 # end of class MyApp
+
 
 if __name__ == "__main__":
     rendertool = MyApp(0)
