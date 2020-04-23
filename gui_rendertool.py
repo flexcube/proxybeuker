@@ -1,5 +1,4 @@
 # TODO: Push build to master
-# TODO: Update Readme with screenshot
 # TODO: Add check if RED Cine-X is installed
 # TODO: Disable focus on TextCtrl on init (Focus on other item at start?) so the cursor also doens't blink
 # TODO: Make the conversion stop when closing the program

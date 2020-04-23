@@ -1,15 +1,15 @@
 # ProxyBeuker
-## Batch Convert RED Digital Cinema .R3D to ProRes for easy editing
+## Batch Convert RED Digital Cinema .R3D to ProRes files
 
 <img src="https://i.imgur.com/lu5q0OS.png" width="50%" height="50%">
 
-If you don't want to waste time setting up presets and slow workflows in Davinci Resolve, Premiere Pro or Adobe Media Encoder you can use this tool to quickly make proxies.
+If you use proxies for your RED .R3D while editing you know creating them is slow. In Davinci Resolve, Premiere Pro or Adobe Media Encoder it takes time to load clips and configure it. 
 
-Standalone application for OSX. Easy to get going on Windows as well. 
+With proxybeuker you only have to set the input and output folder and the tool does the rest. Great if you have 2500+ RED clips in multiple folders.
 
-You need to have RedCine-X installed for it to work. 
+You need to have RedCine-X installed for it to work. The build is for OSX only at the moment. 
 
-You can build the tool using pyinstaller.
-pyinstaller --onefile -y --icon=ico.icns --windowed gui_rendertool.py
+Build the source code yourself (code in .vscode - task.json) or download the zip from the dist folder. 
 
-https://www.proxybeuker.com for info
+More info:
+https://www.proxybeuker.com

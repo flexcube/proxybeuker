@@ -4,10 +4,21 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "Build ProxyBeuker OSX",
             "type": "shell",
-            "command": "pyinstaller --onefile -y --icon=ico.icns --windowed gui_rendertool.py",
-            "problemMatcher": []
+            "command": "${config:python.pythonPath} -m PyInstaller --onefile -y --icon=ico.icns --windowed gui_rendertool.py",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Zip ProxyBeuker Build",
+            "type": "shell",
+            "command": "zip -r dist/proxybeuker.zip dist/gui_rendertool.app",
+            "problemMatcher": [],
+            "group": "build"
         }
     ]
 }

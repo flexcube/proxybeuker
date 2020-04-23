@@ -1,14 +1,11 @@
 .vscode/settings.json
 .vscode/launch.json
-build/rendertool/out00-PYZ.toc
-rendertool.spec
-.vscode/
+.vscode/.ropeproject
+__pycache__
 .pyc
 .DS_Store
 gui_rendertool.spec
-rendcd.spec
 build/
-Archived/
-Archived/gui_layout
+env/
 code_snippets.py
 __pycache__/gui_rendertool.cpython-36.pyc
