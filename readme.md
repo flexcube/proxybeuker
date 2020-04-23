@@ -1,7 +1,9 @@
 # ProxyBeuker
 ## Batch Convert RED Digital Cinema .R3D to ProRes for easy editing
 
-![Software Screenshot](https://i.imgur.com/lu5q0OS.png){:height="50%" width="50%"}
+![Software Screenshot]()
+
+<img src="https://i.imgur.com/lu5q0OS.png" width="50" height="50">
 
 If you don't want to waste time setting up presets and slow workflows in Davinci Resolve, Premiere Pro or Adobe Media Encoder you can use this tool to quickly make proxies.
 
