@@ -1,4 +1,16 @@
-#!/usr/bin/python3
+# TODO: Push build to master
+# TODO: Update Readme with screenshot
+# TODO: Add check if RED Cine-X is installed
+# TODO: Disable focus on TextCtrl on init (Focus on other item at start?) so the cursor also doens't blink
+# TODO: Make the conversion stop when closing the program
+# TODO: Create progressbar instead of textbox, have the start button display with text the status.
+# TODO: Add Logo above text box
+# TODO: Add amount of files it will convert in the beginning
+# TODO: Make Windows version / Compatible?
+# TODO: Check if the output settings are correct for the RED color settings
+# TODO: Add estimated time remaining
+# TODO: Clear terminal when processing the files.
+# BUG: Fix Retina Resolution when packaged https://pyinstaller.readthedocs.io/en/stable/spec-files.html#spec-file-options-for-a-mac-os-x-bundle
 
 import wx
 import glob
@@ -10,13 +22,6 @@ import os
 import sys  # Can be deleted if error handling in Except is improved
 import traceback
 import threading
-
-# TODO: Add check if RED Cine-X is installed
-# TODO: Disable focus on TextCtrl on init (Focus on other item at start?)
-# TODO: Make the conversion stop when closing the program
-# TODO: Create progressbar instead of textbox, have the start button display with text the status.
-# TODO: Add Logo above text box
-# BUG: Fix Retina Resolution when packaged https://pyinstaller.readthedocs.io/en/stable/spec-files.html#spec-file-options-for-a-mac-os-x-bundle
 
 
 class converter(threading.Thread):
@@ -168,7 +173,7 @@ class MyFrame(wx.Frame):
                 self.text_box.AppendText("License Status: Trial Activated \n")
                 # Intro Text
                 self.text_box.AppendText(
-                    "Welcome to ProxyBeuker! This tool batch converts RED .R3D files to Full HD ProRes LT.  \nMake sure to have the latest Redcine-X Pro version installed.\n\nSoftware provided as is, make a back-up before running. \nContact: info@proxybeuker.com \n\n")
+                    "Welcome to ProxyBeuker V1.1! This tool batch converts RED .R3D files to Full HD ProRes LT.  \n\nSoftware provided as is, make a back-up before running. \nContact: info@proxybeuker.com \n\n")
             # end wxGlade
             else:
                 self.text_box.AppendText(
