@@ -1,11 +1,11 @@
 .vscode/settings.json
 .vscode/launch.json
 .vscode/.ropeproject
+.vscode/tasks.json
 __pycache__
 .pyc
 .DS_Store
-gui_rendertool.spec
 build/
 env/
 code_snippets.py
-__pycache__/gui_rendertool.cpython-36.pyc
+workspace.code-workspace

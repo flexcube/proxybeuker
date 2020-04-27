@@ -6,7 +6,7 @@
         {
             "label": "Build ProxyBeuker OSX",
             "type": "shell",
-            "command": "${config:python.pythonPath} -m PyInstaller --onefile -y --icon=ico.icns --windowed gui_rendertool.py",
+            "command": "source /Users/pieter/Downloads/CODE_PROJECTS/ProxyBeuker/proxybeuker/env/bin/activate;  PyInstaller --onefile -y proxybeuker.spec --icon=ico.icns --windowed",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -16,7 +16,7 @@
         {
             "label": "Zip ProxyBeuker Build",
             "type": "shell",
-            "command": "zip -r dist/proxybeuker.zip dist/gui_rendertool.app",
+            "command": "zip -r dist/proxybeuker.zip dist/proxybeuker.app",
             "problemMatcher": [],
             "group": "build"
         }
