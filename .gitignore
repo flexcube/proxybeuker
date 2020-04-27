@@ -1,0 +1,11 @@
+.vscode/settings.json
+.vscode/launch.json
+.vscode/.ropeproject
+.vscode/tasks.json
+__pycache__
+.pyc
+.DS_Store
+build/
+env/
+code_snippets.py
+workspace.code-workspace
