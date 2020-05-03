@@ -165,7 +165,7 @@ class MyFrame(wx.Frame):
             # Intro Text
             self.text_box.AppendText(
                 "Welcome to ProxyBeuker V1.2! Contact: info@proxybeuker.com\nThis tool batch converts RED .R3D files to Full HD ProRes LT \n\n")
-            self.text_box.AppendText("License Status: Trial Activated")
+            self.text_box.AppendText("License Status: Trial Activated\n\n")
         else:
             self.text_box.AppendText(
                 "Trial license expired or license server could not be reached.\nBuy a license at www.proxybeuker.com or contact us at \ninfo@proxybeuker.com")
