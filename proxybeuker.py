@@ -241,7 +241,7 @@ class MyFrame(wx.Frame):
         self.Centre()
 
     def start_conversion(self, e):
-        converter(self.input_directory, self.output_directory)
+        converter(input_directory, output_directory)
         self.text_box.AppendText(str(converter.gui_log))
     
 class MyApp(wx.App):
