@@ -2,7 +2,7 @@
 ## Batch Convert RED Digital Cinema .R3D to ProRes video files using ProxyBeuker
 
 <img src="https://repository-images.githubusercontent.com/113862704/d2fb0700-8586-11ea-8bd1-a6900d5898d2" width="50%" height="50%">
-<img src="https://i.imgur.com/lu5q0OS.png" width="50%" height="50%">
+<img src="https://proxybeuker.com/images/5f6ca3a50cf73174242b66e8_proxy-beuker-mockup-2-1.jpg" width="50%" height="50%">
 
 ProxyBeuker helps with a quick proxy workflow for video editing. Creating proxies in Adobe Media Encoder or Resolve takes time. You have to import files, configure presets etc... 
 
