@@ -13,7 +13,7 @@ lazy-object-proxy==1.4.3
 macholib==1.14
 mccabe==0.6.1
 numpy==1.18.3
-Pillow==7.1.1
+Pillow==9.3.0
 post==2019.4.13
 public==2019.4.13
 pycodestyle==2.5.0
