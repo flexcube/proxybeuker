@@ -1,7 +1,7 @@
 altgraph==0.17
 astroid==2.3.3
 autopep8==1.5.1
-certifi==2020.4.5.1
+certifi==2022.12.7
 chardet==3.0.4
 entrypoints==0.3
 ExifRead==2.1.2
